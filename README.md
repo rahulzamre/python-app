@@ -1,5 +1,6 @@
 # python-app
 
+A simple app
 
 
 ## Getting started
