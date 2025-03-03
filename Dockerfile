@@ -1,5 +1,5 @@
 # Step 1: Use an official Python runtime as a base image
-FROM python:3.12-slim-buster 
+FROM python:3.13-bookworm
 
 
 # Step 2: Set the working directory inside the container
