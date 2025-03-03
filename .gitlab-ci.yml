@@ -12,9 +12,28 @@ build:
   image: docker:20.10.7
   services:
     - docker:19.03.12-dind  # Docker-in-Docker service
+  
   before_script:
     - echo "Logging into GitLab Container Registry..."
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - |
+      if [ "$CI_COMMIT_REF_NAME" == "dev" ]; then
+        git fetch origin dev
+        git checkout dev
+      elif [ "$CI_COMMIT_REF_NAME" == "preprod" ]; then
+        git fetch origin preprod
+        git checkout preprod
+      elif [ "$CI_COMMIT_REF_NAME" == "prod" ]; then
+        git fetch origin production
+        git checkout production
+      elif [ "$CI_COMMIT_REF_NAME" == "main" ]; then
+        git fetch origin main
+        git checkout main
+      else
+        echo "Branch is not one of the predefined environments (dev, preprod, prod, main). Skipping build."
+        exit 0  # Skip build for other branches
+      fi  
+    - git checkout dev
     
   script:
     - echo "Building Docker image for $CI_COMMIT_REF_NAME environment..."
