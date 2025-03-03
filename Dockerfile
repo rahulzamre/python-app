@@ -8,8 +8,10 @@ WORKDIR /app
 # Step 3: Copy the requirements.txt first to leverage Docker cache
 COPY app/requirements.txt /app/
 
+RUN pip config --user set global.progress_bar off
 # Step 4: Install any needed dependencies specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # Step 5: Copy the application code (everything from the app directory) into the container
 COPY app /app/
