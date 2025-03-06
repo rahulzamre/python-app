@@ -65,7 +65,7 @@ jobs:
           fi          
 
           # Output the tags and labels for later use
-          echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${BRANCH_TAG}-${SHORT_SHA}"
+          echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION_TAG}"
           echo "::set-output name=labels::branch=${BRANCH_TAG},sha=${SHORT_SHA}"
 
       # Set up Docker Buildx for multi-platform builds
