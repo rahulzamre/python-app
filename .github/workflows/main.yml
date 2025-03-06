@@ -7,6 +7,10 @@ on:
       - "develop"
       - "feature/*"
 
+permissions:
+  contents: read
+  packages: write  # Required for pushing to GHCR
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -37,14 +41,3 @@ jobs:
           context: .
           push: true
           tags: "ghcr.io/${{ github.repository }}/my-image:${{ env.TAG }}"
-
-  trigger-terraform:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Terraform Workflow in Other Repo
-        run: |
-          curl -X POST -H "Accept: application/vnd.github.v3+json" \
-               -H "Authorization: Bearer ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}" \
-               https://api.github.com/repos/my-org/terraform/actions/workflows/update-tfvars.yml/dispatches \
-               -d '{"ref":"main","inputs":{"image_tag":"${{ env.TAG }}"}}'
