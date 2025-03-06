@@ -2,9 +2,9 @@ name: Create and publish a Docker image
 
 on:
   push:
-#    branches: ['main', 'dev', 'preprod', 'production']
-#    tags:
-#      - 'v*'
+    branches: ['main', 'dev', 'preprod', 'production']
+    tags:
+      - 'v*'
 
 env:
   REGISTRY: ghcr.io
@@ -59,14 +59,12 @@ jobs:
           # Output the two tags: one based on branch name and one based on the short SHA
           echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}-${SHORT_SHA},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${SHORT_SHA}"
 
-      # Set up Docker Buildx for multi-platform builds
+      # Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        with:
-          install: true
 
-      # Build and push Docker image for multiple architectures (amd64, arm64)
-      - name: Build and push Docker image for multiple architectures
+      # Build and push Docker image for multiple architectures
+      - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
