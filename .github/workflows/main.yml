@@ -73,10 +73,10 @@ jobs:
           fi
           
           # Build the Docker image
-          docker build -t ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:$IMAGE_TAG -t ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:$VERSION_TAG .
+          docker build -t  ghcr.io/${{ github.repository }}:$IMAGE_TAG -t ghcr.io/${{ github.repository }}:$VERSION_TAG .
 
       - name: Push Docker image
         run: |
           echo "Pushing Docker image to GitHub Container Registry..."
-          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:$IMAGE_TAG
-          docker push ${{ secrets.REGISTRY_URL }}/${{ github.repository }}:$VERSION_TAG
+          docker push ghcr.io/${{ github.repository }}:$IMAGE_TAG
+          docker push ghcr.io/${{ github.repository }}:$VERSION_TAG
