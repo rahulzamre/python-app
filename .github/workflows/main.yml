@@ -72,5 +72,5 @@ jobs:
     - name: Push Docker image to GitHub Docker Registry
       run: |
         echo "Pushing Docker image to GitHub Container Registry..."
-        docker push "$IMAGE_NAME":"$IMAGE_TAG"
-        docker push "$IMAGE_NAME":"$VERSION_TAG"
+        docker push $IMAGE_NAME:$IMAGE_TAG
+        docker push $IMAGE_NAME":$VERSION_TAG
