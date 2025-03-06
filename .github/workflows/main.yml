@@ -14,7 +14,7 @@ jobs:
 
     env:
       # Base image name using GitHub's Container Registry (ghcr.io)
-      IMAGE_NAME: ghcr.io/${{ github.repository }}
+      IMAGE_NAME: ${{ github.repository }}
       DOCKER_BUILDKIT: 1  # Enable BuildKit for efficient builds
 
     steps:
@@ -31,7 +31,7 @@ jobs:
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        registry: https://ghcr.io
+        registry: https://ghcr.io/${{ github.actor }}
 
     - name: Set up Git
       run: |
