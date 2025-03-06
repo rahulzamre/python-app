@@ -62,7 +62,6 @@ jobs:
 
           # Output the tags and labels for later use
           echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION_TAG}"
-          echo "::set-output name=labels::branch=${BRANCH_TAG},sha=${SHORT_SHA}"
 
       # Set up Docker Buildx for multi-platform builds
       - name: Set up Docker Buildx
@@ -77,4 +76,3 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
