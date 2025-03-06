@@ -2,7 +2,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['main', 'dev', 'preprod','production']
+    branches: ['main', 'dev', 'preprod', 'production']
     tags:
       - 'v*'
 
@@ -45,23 +45,19 @@ jobs:
           
           if [[ "$BRANCH_NAME" == "dev" ]]; then
             IMAGE_TAG="dev"
-            VERSION_TAG="dev-${SHORT_SHA}"
           elif [[ "$BRANCH_NAME" == "preprod" ]]; then
             IMAGE_TAG="preprod"
-            VERSION_TAG="preprod-${SHORT_SHA}"
-          elif [[ "$BRANCH_NAME" == "prod" ]]; then
+          elif [[ "$BRANCH_NAME" == "production" ]]; then
             IMAGE_TAG="prod"
-            VERSION_TAG="prod-${SHORT_SHA}"
           elif [[ "$BRANCH_NAME" == "main" ]]; then
             IMAGE_TAG="main"
-            VERSION_TAG="main-${SHORT_SHA}"
           else
             echo "Branch is not one of the predefined environments (dev, preprod, prod, main). Skipping build."
             exit 0
           fi          
 
-          # Output the tags and labels for later use
-          echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${VERSION_TAG}"
+          # Output the two tags: one based on branch name and one based on the short SHA
+          echo "::set-output name=tags::${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}-${SHORT_SHA},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${SHORT_SHA}"
 
       # Set up Docker Buildx for multi-platform builds
       - name: Set up Docker Buildx
