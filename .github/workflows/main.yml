@@ -31,6 +31,7 @@ jobs:
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+        resgistery: https://ghcr.io
 
     - name: Set up Git
       run: |
