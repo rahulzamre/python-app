@@ -46,10 +46,14 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
+      - name: Debug TAG
+        run: echo "The TAG value is ${{ env.TAG }}"
+
       - name: Trigger Terraform Workflow in Other Repo
         run: |
-          PAYLOAD='{"ref":"main","inputs":{"image_tag": '"${{ env.TAG }}"' }}'
+          json='{"ref":"main","inputs":{"image_tag":"${{ env.TAG }}"}}'
+          echo "JSON Payload: $json"
           curl -X POST -H "Accept: application/vnd.github.v3+json" \
                -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
-               https://api.github.com/repos/rahulzamre/terraform/actions/workflows/update-tfvars.yml/dispatches \
-               -d ${PAYLOAD}
+               -d "$json" \
+               https://api.github.com/repos/rahulzamre/terraform/actions/workflows/update-tfvars.yml/dispatches
