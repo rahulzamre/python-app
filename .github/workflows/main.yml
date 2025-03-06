@@ -1,6 +1,6 @@
 name: Build and Publish Docker Image
 
-#triggers on
+#triggers on this
 on:
   push:
     branches:
