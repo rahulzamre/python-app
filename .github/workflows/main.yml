@@ -29,6 +29,7 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          registry: https://ghcr.io
         
       - name: Fetch and checkout correct branch
         run: |
