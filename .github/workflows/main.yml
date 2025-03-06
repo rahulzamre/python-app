@@ -34,6 +34,7 @@ jobs:
           BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-')
           SHORT_SHA=$(git rev-parse --short HEAD)
           echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_ENV
+          echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
@@ -45,6 +46,8 @@ jobs:
   trigger-terraform:
     needs: build-and-push
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ steps.meta.outputs.TAG }}
     steps:
       - name: Debug TAG
         run: echo "The TAG value is ${{ env.TAG }}"
