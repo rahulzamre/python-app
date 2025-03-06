@@ -47,19 +47,23 @@ jobs:
         BRANCH_NAME=${{ github.ref_name }}
         SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/\//-/g')  # Replace slashes with hyphens
         
+        # Get the short SHA (first 7 characters)
+        SHORT_SHA=${{ github.sha }}
+        SHORT_SHA=${SHORT_SHA:0:7}  # Extract the first 7 characters of the SHA
+        
         # Tagging strategy based on the branch (dev, preprod, prod, main)
         if [[ "$SANITIZED_BRANCH_NAME" == "dev" ]]; then
           IMAGE_TAG="dev"
-          VERSION_TAG="dev-${{ github.sha }}"
+          VERSION_TAG="dev-${SHORT_SHA}"
         elif [[ "$SANITIZED_BRANCH_NAME" == "preprod" ]]; then
           IMAGE_TAG="preprod"
-          VERSION_TAG="preprod-${{ github.sha }}"
+          VERSION_TAG="preprod-${SHORT_SHA}"
         elif [[ "$SANITIZED_BRANCH_NAME" == "prod" ]]; then
           IMAGE_TAG="prod"
-          VERSION_TAG="prod-${{ github.sha }}"
+          VERSION_TAG="prod-${SHORT_SHA}"
         elif [[ "$SANITIZED_BRANCH_NAME" == "main" ]]; then
           IMAGE_TAG="main"
-          VERSION_TAG="main-${{ github.sha }}"
+          VERSION_TAG="main-${SHORT_SHA}"
         else
           echo "Branch is not one of the predefined environments (dev, preprod, prod, main). Skipping build."
           exit 0
@@ -72,5 +76,5 @@ jobs:
     - name: Push Docker image to GitHub Docker Registry
       run: |
         echo "Pushing Docker image to GitHub Container Registry..."
-        docker push $IMAGE_NAME:$IMAGE_TAG
-        docker push $IMAGE_NAME":$VERSION_TAG
+        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+        docker push ${IMAGE_NAME}:${VERSION_TAG}
