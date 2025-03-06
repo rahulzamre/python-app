@@ -43,17 +43,21 @@ jobs:
       run: |
         echo "Building Docker image for ${{ github.ref_name }} environment..."
 
+        # Sanitize branch name for Docker tag (replace / with -)
+        BRANCH_NAME=${{ github.ref_name }}
+        SANITIZED_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/\//-/g')  # Replace slashes with hyphens
+        
         # Tagging strategy based on the branch (dev, preprod, prod, main)
-        if [[ "${{ github.ref_name }}" == "dev" ]]; then
+        if [[ "$SANITIZED_BRANCH_NAME" == "dev" ]]; then
           IMAGE_TAG="dev"
           VERSION_TAG="dev-${{ github.sha }}"
-        elif [[ "${{ github.ref_name }}" == "preprod" ]]; then
+        elif [[ "$SANITIZED_BRANCH_NAME" == "preprod" ]]; then
           IMAGE_TAG="preprod"
           VERSION_TAG="preprod-${{ github.sha }}"
-        elif [[ "${{ github.ref_name }}" == "prod" ]]; then
+        elif [[ "$SANITIZED_BRANCH_NAME" == "prod" ]]; then
           IMAGE_TAG="prod"
           VERSION_TAG="prod-${{ github.sha }}"
-        elif [[ "${{ github.ref_name }}" == "main" ]]; then
+        elif [[ "$SANITIZED_BRANCH_NAME" == "main" ]]; then
           IMAGE_TAG="main"
           VERSION_TAG="main-${{ github.sha }}"
         else
