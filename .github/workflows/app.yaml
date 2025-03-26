@@ -20,3 +20,10 @@ jobs:
         with:
           app-id: 1193341
           private-key: ${{ vars.GH_APP_PRIVATE_KEY }}
+          
+      - name: Use the token
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh api octocat
+          gh api repos/rahulzamre/python-app/actions/workflows --auth $GH_TOKEN
